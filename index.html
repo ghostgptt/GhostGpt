@@ -62,9 +62,41 @@ body {
 
 .topbar {
     width: 100%;
-    padding: 22px;
+    padding: 18px 25px;
     border-bottom: 1px solid #172317;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
     color: #39ff14;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.nav-links a:hover {
+    color: #39ff14;
+}
+
+.nav-links button {
+    background: #39ff14;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
     font-weight: bold;
 }
 
@@ -150,7 +182,29 @@ body {
         width: 92%;
         bottom: 20px;
     }
+
+    .nav-links {
+        gap: 10px;
+    }
+
+    .nav-links a {
+        font-size: 11px;
+    }
+
+    .nav-links button {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .brand {
+        font-size: 17px;
+    }
+
+    .topbar {
+        padding: 15px 10px;
+    }
 }
+    
 </style>
 </head>
 
@@ -165,8 +219,17 @@ body {
 
 <main class="main">
 
-    <div class="topbar">GhostGPT <span style="color:#777">/ AI Assistant</span></div>
+    <div class="topbar">
+    <div class="brand">👻 GhostGPT</div>
 
+    <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="#about">About</a>
+        <a href="#features">Features</a>
+        <button onclick="alert('Login coming soon!')">Login</button>
+    </nav>
+    </div>
+    
     <div class="welcome" id="welcome">
         <h1>Welcome to <span>GhostGPT</span></h1>
         <p>Your ideas. Your intelligence. Your space.</p>
