@@ -1,1 +1,228 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GhostGPT</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #050705;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+}
+
+.sidebar {
+    width: 260px;
+    background: #090d09;
+    border-right: 1px solid #172317;
+    padding: 25px;
+}
+
+.logo {
+    color: #39ff14;
+    font-size: 27px;
+    font-weight: bold;
+    margin-bottom: 35px;
+}
+
+.new-chat {
+    width: 100%;
+    padding: 13px;
+    background: #39ff14;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.sidebar p {
+    color: #777;
+    margin-top: 30px;
+    font-size: 13px;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.topbar {
+    width: 100%;
+    padding: 22px;
+    border-bottom: 1px solid #172317;
+    color: #39ff14;
+    font-weight: bold;
+}
+
+.welcome {
+    margin-top: 18vh;
+    text-align: center;
+}
+
+.welcome h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.welcome h1 span {
+    color: #39ff14;
+}
+
+.welcome p {
+    color: #888;
+}
+
+.chat-box {
+    position: absolute;
+    bottom: 35px;
+    width: 85%;
+    max-width: 750px;
+    display: flex;
+    background: #101510;
+    border: 1px solid #263926;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.chat-box input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 12px;
+    font-size: 15px;
+}
+
+.chat-box button {
+    background: #39ff14;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.messages {
+    width: 85%;
+    max-width: 750px;
+    margin-top: 30px;
+    overflow-y: auto;
+    padding-bottom: 100px;
+}
+
+.message {
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #101510;
+    border-radius: 10px;
+    line-height: 1.5;
+}
+
+.user {
+    border-left: 3px solid #39ff14;
+}
+
+@media(max-width: 650px) {
+    .sidebar {
+        display: none;
+    }
+
+    .welcome h1 {
+        font-size: 30px;
+    }
+
+    .chat-box {
+        width: 92%;
+        bottom: 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+    <div class="logo">👻 GhostGPT</div>
+    <button class="new-chat" onclick="newChat()">+ New Chat</button>
+    <p>RECENT CHATS</p>
+    <div id="history"></div>
+</aside>
+
+<main class="main">
+
+    <div class="topbar">GhostGPT <span style="color:#777">/ AI Assistant</span></div>
+
+    <div class="welcome" id="welcome">
+        <h1>Welcome to <span>GhostGPT</span></h1>
+        <p>Your ideas. Your intelligence. Your space.</p>
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="chat-box">
+        <input id="prompt" type="text" placeholder="Message GhostGPT..." />
+        <button onclick="sendMessage()">SEND</button>
+    </div>
+
+</main>
+
+<script>
+function sendMessage() {
+    const input = document.getElementById("prompt");
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    document.getElementById("welcome").style.display = "none";
+
+    const messages = document.getElementById("messages");
+
+    const message = document.createElement("div");
+    message.className = "message user";
+    message.textContent = "You: " + text;
+
+    messages.appendChild(message);
+
+    const reply = document.createElement("div");
+    reply.className = "message";
+    reply.textContent = "GhostGPT: This is the frontend preview. AI functionality will be connected in the next development stage.";
+
+    messages.appendChild(reply);
+
+    const history = document.getElementById("history");
+    const item = document.createElement("p");
+    item.textContent = text.substring(0, 25);
+    history.prepend(item);
+
+    input.value = "";
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function newChat() {
+    document.getElementById("messages").innerHTML = "";
+    document.getElementById("history").innerHTML = "";
+    document.getElementById("welcome").style.display = "block";
+}
+
+document.getElementById("prompt").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") sendMessage();
+});
+</script>
+
+</body>
+</html>
