@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GhostGPT | Dashboard</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #080b09;
+    color: #fff;
+}
+
+:root {
+    --green: #39ff88;
+    --card: #111713;
+    --border: #202a23;
+    --muted: #89958c;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 250px;
+    background: #0c110e;
+    border-right: 1px solid var(--border);
+    padding: 25px 18px;
+    position: fixed;
+    height: 100vh;
+    transition: .3s;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: bold;
+    color: var(--green);
+    margin-bottom: 45px;
+}
+
+.logo span {
+    color: white;
+}
+
+.menu-label {
+    color: var(--muted);
+    font-size: 11px;
+    margin: 25px 10px 12px;
+    letter-spacing: 1px;
+}
+
+.nav a {
+    display: block;
+    color: #aeb8b0;
+    text-decoration: none;
+    padding: 13px;
+    border-radius: 8px;
+    margin-bottom: 7px;
+    font-size: 14px;
+}
+
+.nav a:hover,
+.nav a.active {
+    background: #14251a;
+    color: var(--green);
+}
+
+.close-btn {
+    display: none;
+}
+
+/* MAIN */
+.main {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 25px 35px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: #183d27;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--green);
+    font-weight: bold;
+}
+
+.profile small {
+    color: var(--muted);
+    display: block;
+    margin-top: 4px;
+}
+
+/* CONTENT */
+.welcome {
+    margin-bottom: 30px;
+}
+
+.welcome h1 {
+    font-size: 29px;
+    margin-bottom: 10px;
+}
+
+.welcome p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* CARDS */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 23px;
+}
+
+.card-title {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+.card h2 {
+    font-size: 27px;
+    margin-bottom: 8px;
+}
+
+.green {
+    color: var(--green);
+}
+
+.card small {
+    color: var(--muted);
+}
+
+/* LOWER SECTION */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+}
+
+.section-title {
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+.plan-box {
+    background: #102018;
+    border: 1px solid #245235;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.plan-box h2 {
+    color: var(--green);
+    margin-bottom: 10px;
+}
+
+.plan-box p {
+    color: #aab5ad;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.progress {
+    height: 7px;
+    background: #26352b;
+    border-radius: 20px;
+    margin: 18px 0 10px;
+    overflow: hidden;
+}
+
+.progress div {
+    width: 35%;
+    height: 100%;
+    background: var(--green);
+}
+
+.activity {
+    border-bottom: 1px solid var(--border);
+    padding: 15px 0;
+    font-size: 13px;
+}
+
+.activity:last-child {
+    border: none;
+}
+
+.activity span {
+    display: block;
+    color: var(--muted);
+    margin-top: 6px;
+}
+
+/* BUTTONS */
+button {
+    cursor: pointer;
+}
+
+.upgrade-btn {
+    margin-top: 18px;
+    background: var(--green);
+    border: none;
+    padding: 11px 18px;
+    border-radius: 7px;
+    font-weight: bold;
+}
+
+/* MOBILE OVERLAY */
+.overlay {
+    display: none;
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 650px) {
+    .sidebar {
+        left: -270px;
+        width: 250px;
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
+
+    .close-btn {
+        display: block;
+        position: absolute;
+        right: 18px;
+        top: 20px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 23px;
+    }
+
+    .overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.7);
+        z-index: 90;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px 16px;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .topbar {
+        margin-bottom: 30px;
+    }
+
+    .welcome h1 {
+        font-size: 23px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .card h2 {
+        font-size: 21px;
+    }
+
+    .card-title {
+        font-size: 11px;
+    }
+
+    .profile {
+        gap: 8px;
+    }
+
+    .profile strong {
+        font-size: 12px;
+    }
+
+    .profile small {
+        font-size: 10px;
+    }
+}
+
+@media(max-width: 360px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+
+    <button class="close-btn" onclick="closeMenu()">×</button>
+
+    <div class="logo">👻 GHOST<span>GPT</span></div>
+
+    <div class="menu-label">MAIN MENU</div>
+
+    <nav class="nav">
+        <a href="#" class="active">▦ Dashboard</a>
+        <a href="index.html">✧ AI Chat</a>
+        <a href="#">◈ My Subscription</a>
+        <a href="#">▤ Usage History</a>
+    </nav>
+
+    <div class="menu-label">ACCOUNT</div>
+
+    <nav class="nav">
+        <a href="#">⚙ Settings</a>
+        <a href="#">? Help & Support</a>
+        <a href="#" onclick="logout()">↪ Logout</a>
+    </nav>
+
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+    <header class="topbar">
+
+        <div class="topbar-left">
+            <button class="menu-btn" onclick="openMenu()">☰</button>
+            <div>
+                <strong>Dashboard</strong>
+            </div>
+        </div>
+
+        <div class="profile">
+            <div class="avatar">U</div>
+            <div>
+                <strong>Guest User</strong>
+                <small>Member Account</small>
+            </div>
+        </div>
+
+    </header>
+
+    <section class="welcome">
+        <h1>Welcome back, <span class="green">User</span> 👋</h1>
+        <p>Here's an overview of your GhostGPT account.</p>
+    </section>
+
+    <!-- STATISTICS -->
+    <section class="stats">
+
+        <div class="card">
+            <div class="card-title">CURRENT PLAN</div>
+            <h2 class="green">Nano</h2>
+            <small>Membership level</small>
+        </div>
+
+        <div class="card">
+            <div class="card-title">MESSAGES USED</div>
+            <h2>35</h2>
+            <small>Of 100 messages</small>
+        </div>
+
+        <div class="card">
+            <div class="card-title">MESSAGES LEFT</div>
+            <h2 class="green">65</h2>
+            <small>Available today</small>
+        </div>
+
+    </section>
+
+    <!-- LOWER CONTENT -->
+    <section class="content-grid">
+
+        <div class="card">
+
+            <h3 class="section-title">Your Subscription</h3>
+
+            <div class="plan-box">
+                <h2>👻 Nano Plan</h2>
+                <p>
+                    You're currently using the Nano membership.
+                    Upgrade your plan to access more features
+                    and higher usage limits.
+                </p>
+
+                <div class="progress">
+                    <div></div>
+                </div>
+
+                <p>35% of your daily messages used.</p>
+
+                <button class="upgrade-btn">
+                    Upgrade Plan →
+                </button>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h3 class="section-title">Recent Activity</h3>
+
+            <div class="activity">
+                💬 AI Chat opened
+                <span>Recently</span>
+            </div>
+
+            <div class="activity">
+                👤 Account created
+                <span>Welcome to GhostGPT</span>
+            </div>
+
+            <div class="activity">
+                💎 Nano membership
+                <span>Current plan</span>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+</div>
+
+<script>
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+
+function openMenu() {
+    sidebar.classList.add("open");
+    overlay.classList.add("show");
+}
+
+function closeMenu() {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+}
+
+function logout() {
+    alert("Logout will be connected when authentication is added.");
+}
+</script>
+
+</body>
+  </html>
